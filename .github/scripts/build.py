@@ -21,6 +21,7 @@ The exported files will be placed in the specified output directory (default: _s
 # ///
 
 import subprocess
+import shutil
 from typing import List, Union
 from pathlib import Path
 
@@ -133,6 +134,32 @@ def _generate_index(output_dir: Path, template_file: Path, notebooks_data: List[
         logger.error(f"Error rendering template: {e}")
 
 
+def _copy_public_directory(source_folder: Path, output_dir: Path) -> None:
+    """Copy the public directory from source folder to output directory.
+
+    Args:
+        source_folder (Path): Path to the folder containing the public directory
+        output_dir (Path): Directory where the public folder will be copied
+
+    Returns:
+        None
+    """
+    public_dir = source_folder / "public"
+    if public_dir.exists() and public_dir.is_dir():
+        # Copy to output_dir/source_folder/public to maintain structure
+        dest_public = output_dir / source_folder / "public"
+        dest_public.parent.mkdir(parents=True, exist_ok=True)
+
+        # Remove destination if it exists
+        if dest_public.exists():
+            shutil.rmtree(dest_public)
+
+        shutil.copytree(public_dir, dest_public)
+        logger.info(f"Copied {public_dir} to {dest_public}")
+    else:
+        logger.debug(f"No public directory found in {source_folder}")
+
+
 def _export(folder: Path, output_dir: Path, as_app: bool=False) -> List[dict]:
     """Export all marimo notebooks in a folder to HTML/WebAssembly format.
 
@@ -171,6 +198,9 @@ def _export(folder: Path, output_dir: Path, as_app: bool=False) -> List[dict]:
         for nb in notebooks
         if _export_html_wasm(nb, output_dir, as_app=as_app)
     ]
+
+    # Copy the public directory if it exists
+    _copy_public_directory(folder, output_dir)
 
     logger.info(f"Successfully exported {len(notebook_data)} out of {len(notebooks)} files from {folder}")
     return notebook_data
@@ -216,6 +246,15 @@ def main(
     if not notebooks_data and not apps_data:
         logger.warning("No notebooks or apps found!")
         return
+
+    # Copy layouts directory if it exists
+    layouts_dir = Path("layouts")
+    if layouts_dir.exists() and layouts_dir.is_dir():
+        dest_layouts = output_dir / "layouts"
+        if dest_layouts.exists():
+            shutil.rmtree(dest_layouts)
+        shutil.copytree(layouts_dir, dest_layouts)
+        logger.info(f"Copied layouts directory to {dest_layouts}")
 
     # Generate the index.html file that lists all notebooks and apps
     _generate_index(output_dir=output_dir, notebooks_data=notebooks_data, apps_data=apps_data, template_file=template_file)
