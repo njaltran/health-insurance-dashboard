@@ -88,7 +88,7 @@ def _(base_url, data_mart_selector, pd):
     # Read CSV file from GitHub raw URL
     csv_url = f"{base_url}/{selected_table}.csv"
     df = pd.read_csv(csv_url)
-    return csv_url, df, display_name, selected_table
+    return df, display_name, selected_table
 
 
 @app.cell
@@ -335,21 +335,20 @@ def _(df, px, selected_table):
         fig1 = px.bar(
             df,
             x='data_source',
-            y=['missing_blood_oxygen_pct', 'missing_stress_level_pct'],
-            title='Missing Data by Source (%)',
+            y='total_records',
+            title='Total records by source',
             barmode='group',
-            labels={'value': 'Percentage (%)', 'variable': 'Metric'}
+            labels={'value': 'Count', 'variable': 'Metric'}
         )
 
         # 2. Invalid Data Distribution
         fig2 = px.bar(
             df,
             x='data_source',
-            y=['invalid_heart_rate_pct', 'invalid_blood_oxygen_pct', 'invalid_steps_pct'],
-            title='Invalid Data by Source (%)',
+            y='overall_quality_score',
+            title='Quality score by source',
             barmode='group',
-            labels={'value': 'Percentage (%)', 'variable': 'Type'}
-        )
+            labels={'value': 'Percentage (%)', 'variable': 'Metric'})
 
         # 3. Extreme Values Detection
         fig3 = px.bar(
