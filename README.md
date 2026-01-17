@@ -10,7 +10,7 @@ This template repository demonstrates how to export [marimo](https://marimo.io) 
 
 ## 🚀 Usage
 
-1. Fork this repository
+1. Fork this repository 
 2. Add your marimo files to the `notebooks/` or `apps/` directory
    1. `notebooks/` notebooks are exported with `--mode edit`
    2. `apps/` notebooks are exported with `--mode run`
@@ -66,3 +66,4 @@ python -m http.server -d _site
 ```
 
 This will serve the site at `http://localhost:8000`.
+
