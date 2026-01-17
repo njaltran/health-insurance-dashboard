@@ -17,18 +17,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install uv package manager
-        uses: astral-sh/setup-uv@v3
-
       - name: Install dependencies
-        run: uv pip install --system marimo pandas plotly
+        # We install marimo to convert the files
+        run: pip install marimo pandas plotly
 
-      # This creates the public/ directory and converts your apps
-      - name: Build WASM site
+      - name: Build Site Manually
         run: |
-          mkdir -p public
+          # 1. Create the output folder
+          mkdir -p public/apps
+          
+          # 2. Convert the Python Apps to HTML
+          # We force them into the 'apps' subfolder so they don't overwrite index.html
           marimo export html-wasm apps/data_marts_dashboard.py -o public/apps/data_marts_dashboard.html --mode edit
           marimo export html-wasm apps/tableau_embed.py -o public/apps/tableau_embed.html --mode edit
+          
+          # 3. Copy YOUR Landing Page (The Purple One)
+          # This runs last to ensure it overwrites anything else
           cp index.html public/index.html
 
       - name: Upload artifact
