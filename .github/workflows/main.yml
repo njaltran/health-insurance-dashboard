@@ -28,8 +28,8 @@ jobs:
           
           # 2. Convert the Python Apps to HTML
           # We force them into the 'apps' subfolder so they don't overwrite index.html
-          marimo export html-wasm apps/data_marts_dashboard.py -o public/apps/data_marts_dashboard.html --mode edit
-          marimo export html-wasm apps/tableau_embed.py -o public/apps/tableau_embed.html --mode edit
+          marimo export html-wasm apps/data_marts_dashboard.py -o public/apps/data_marts_dashboard.html --mode run
+          marimo export html-wasm apps/tableau_embed.py -o public/apps/tableau_embed.html --mode run
           
           # 3. Copy YOUR Landing Page (The Purple One)
           # This runs last to ensure it overwrites anything else
