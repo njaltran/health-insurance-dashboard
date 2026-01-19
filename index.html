@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insurance Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 40px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .dashboard-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            padding: 40px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 200px;
+        }
+
+        .dashboard-card:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-card:nth-child(2):hover {
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-links {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Health Insurance Dashboard Selection</h1>
+            <p class="subtitle">Interactive visualizations of our complete 5-layer data warehouse</p>
+        </header>
+
+        <div class="dashboard-links">
+            <a href="apps/data_marts_dashboard.html" class="dashboard-card" target="_blank">
+                <div class="card-icon">📊</div>
+                <div class="card-title">Data Marts Dashboards</div>
+                <div class="card-description">Explore customer 360, health demographics, profitability, and data quality insights</div>
+            </a>
+
+            <a href="apps/tableau_embed.html" class="dashboard-card" target="_blank">
+                <div class="card-icon">📈</div>
+                <div class="card-title">Tableau Dashboards</div>
+                <div class="card-description">Interactive Tableau visualizations for health analysists and customer service</div>
+            </a>
+        </div>
+
+        <footer>
+            <p>Built with marimo | Data from dbt + BigQuery 5-Layer Data Warehouse</p>
+            
+            <div style="margin-top: 1.5rem; color: #4b5563;">
+                <p style="margin-bottom: 0.5rem;">
+                    <a href="https://github.com/leon-vv7/dw-health-insurance-bipm" target="_blank" style="color: inherit; text-decoration: underline;">View Project Source Code</a>
+                </p>
+                <p style="font-size: 0.8rem; opacity: 0.6;">
+                    (Tableau credentials required for dashboard access)
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

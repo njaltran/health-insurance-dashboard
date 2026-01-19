@@ -2,25 +2,51 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: ['main']    # Auto-deploy on push to main
-  workflow_dispatch:       # Manual trigger option
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - Checkout code
-      - Install uv package manager
-      - Export notebooks using build.py
-      - Upload artifact to GitHub Pages
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        # We install marimo to convert the files
+        run: pip install marimo pandas plotly
+
+      - name: Build Site Manually
+        run: |
+          # 1. Create the output folder
+          mkdir -p public/apps
+          
+          # 2. Convert the Python Apps to HTML
+          # We force them into the 'apps' subfolder so they don't overwrite index.html
+          marimo export html-wasm apps/data_marts_dashboard.py -o public/apps/data_marts_dashboard.html --mode run
+          marimo export html-wasm apps/tableau_embed.py -o public/apps/tableau_embed.html --mode run
+          
+          # 3. Copy YOUR Landing Page (The Purple One)
+          # This runs last to ensure it overwrites anything else
+          cp index.html public/index.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public/
 
   deploy:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
     steps:
-      - Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
