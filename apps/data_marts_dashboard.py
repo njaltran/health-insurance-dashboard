@@ -10,10 +10,7 @@
 import marimo
 
 __generated_with = "0.19.4"
-app = marimo.App(
-    width="medium",
-    layout_file="layouts/data_marts_dashboard.grid.json",
-)
+app = marimo.App(width="medium")
 
 
 @app.cell
@@ -819,38 +816,44 @@ def _(
 
 
 @app.cell
-def _(fig1):
-    fig1
+def _(fig1, mo):
+    if fig1 is not None:
+        mo.ui.plotly(fig1)
     return
 
 
 @app.cell
-def _(fig2):
-    fig2
+def _(fig2, mo):
+    if fig2 is not None:
+        mo.ui.plotly(fig2)
     return
 
 
 @app.cell
-def _(fig3):
-    fig3
+def _(fig3, mo):
+    if fig3 is not None:
+        mo.ui.plotly(fig3)
     return
 
 
 @app.cell
-def _(fig4):
-    fig4
+def _(fig4, mo):
+    if fig4 is not None:
+        mo.ui.plotly(fig4)
     return
 
 
 @app.cell
-def _(fig5):
-    fig5
+def _(fig5, mo):
+    if fig5 is not None:
+        mo.ui.plotly(fig5)
     return
 
 
 @app.cell
-def _(fig6):
-    fig6
+def _(fig6, mo):
+    if fig6 is not None:
+        mo.ui.plotly(fig6)
     return
 
 
