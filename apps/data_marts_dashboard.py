@@ -829,7 +829,7 @@ def _(customer_360_charts, mo, selected_table):
     # Display all charts for the selected data mart
     # Adding selected_table as dependency ensures this re-renders on data mart changes
     if not customer_360_charts:
-        mo.md("*Select a data mart to view visualizations*")
+        result = mo.md("*Select a data mart to view visualizations*")
     else:
         # Create a fresh list of displayed charts
         # This ensures proper isolation and prevents state carryover
@@ -859,7 +859,9 @@ def _(customer_360_charts, mo, selected_table):
                 displayed_items.append(mo.md(f"Error rendering chart {idx+1}: {str(e)}"))
         
         # Stack with generous spacing to prevent overlap
-        mo.vstack(displayed_items, gap="4rem")
+        result = mo.vstack(displayed_items, gap="4rem")
+    
+    result
     return
 
 
