@@ -10,10 +10,7 @@
 import marimo
 
 __generated_with = "0.19.4"
-app = marimo.App(
-    width="medium",
-    layout_file="layouts/data_marts_dashboard.grid.json",
-)
+app = marimo.App(width="full")
 
 
 @app.cell
@@ -152,6 +149,7 @@ def _(
     df,
     go,
     make_subplots,
+    mo,
     pd,
     px,
     selected_table,
@@ -821,18 +819,14 @@ def _(
 
     else:
         customer_360_charts = []
-    return (customer_360_charts,)
 
-
-@app.cell
-def _(customer_360_charts, mo):
     # Display all charts for the selected data mart
     if customer_360_charts:
         chart_displays = [mo.ui.plotly(chart) for chart in customer_360_charts]
-        charts_display = mo.vstack(chart_displays)
+        charts_output = mo.vstack(chart_displays)
     else:
-        charts_display = mo.md("*Select a data mart to view visualizations*")
-    charts_display
+        charts_output = mo.md("*Select a data mart to view visualizations*")
+    charts_output
     return
 
 
