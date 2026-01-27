@@ -807,23 +807,34 @@ def _(
     else:
         customer_360_charts = []
 
-    # Normalize all charts: disable drag-zoom and scroll-zoom.
-    # Only force autorange on axes that don't already have an explicit range,
-    # so comparison/bullet charts keep their intended scale.
+    # Render each chart inside its own iframe via mo.iframe().
+    # This completely isolates each plotly chart in a separate document,
+    # preventing ghost state from Plotly.react() reusing DOM containers
+    # when switching between data marts.
+    import plotly.io as _pio
     for _fig in customer_360_charts:
         _fig.update_layout(autosize=True, dragmode=False)
         _layout_json = _fig.layout.to_plotly_json()
         for key in list(_layout_json.keys()):
             if key.startswith('xaxis') or key.startswith('yaxis'):
                 axis_props = _layout_json.get(key, {})
-                if 'range' not in axis_props:
-                    _fig.update_layout({key: dict(autorange=True)})
+                if 'range' in axis_props:
+                    _fig.update_layout({key: dict(fixedrange=True)})
+                else:
+                    _fig.update_layout({key: dict(autorange=True, fixedrange=True)})
 
-    # Display all charts with scroll-zoom disabled and mode bar hidden
-    _plotly_config = {"scrollZoom": False, "displayModeBar": False}
     if customer_360_charts:
-        _wrapped = [mo.ui.plotly(_fig, config=_plotly_config) for _fig in customer_360_charts]
-        _charts_output = mo.vstack(_wrapped)
+        _chart_iframes = []
+        for _fig in customer_360_charts:
+            _fig_height = _fig.layout.height or 450
+            _html_str = _pio.to_html(
+                _fig, full_html=True, include_plotlyjs="cdn",
+                config={"displayModeBar": False, "scrollZoom": False, "responsive": True}
+            )
+            _chart_iframes.append(
+                mo.iframe(_html_str, width="100%", height=f"{_fig_height + 40}px")
+            )
+        _charts_output = mo.vstack(_chart_iframes)
     else:
         _charts_output = mo.md("*Select a data mart to view visualizations*")
 
