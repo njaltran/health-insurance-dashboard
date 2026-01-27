@@ -114,29 +114,16 @@ def _(display_name, mo):
 
 @app.cell
 def _(df, mo, selected_table):
-    # Only populate this if we are looking at the Customer 360 mart
-
     customer_selector = mo.ui.dropdown(
-
         options=sorted(df['PersonID'].unique().tolist()) if 'PersonID' in df.columns else [],
-
         label="🔍 Drill Down: Select a Customer ID (Clear to view All)",
-
-        value=None # Default to None (show the aggregate view first)
-
+        value=None
     )
 
-
-    # Only display the dropdown if we are in the right data mart
-
     display_selector = mo.vstack([
-
-        mo.md("### 👤 Single Customer Lookup"), 
-
+        mo.md("### 👤 Single Customer Lookup"),
         customer_selector
-
     ]) if selected_table == "dm_customer_360" and 'PersonID' in df.columns else mo.md("")
-
 
     display_selector
     return (customer_selector,)
@@ -166,7 +153,7 @@ def _(
             # 2. Determine Data Source (Single User vs. Global Average)
             cust_data = {}
             view_title = ""
-        
+
             if customer_selector.value is not None:
                 # CASE A: Specific Customer Selected
                 pid = customer_selector.value
