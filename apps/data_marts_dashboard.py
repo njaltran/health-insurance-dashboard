@@ -820,6 +820,10 @@ def _(
     else:
         customer_360_charts = []
 
+    # Normalize all charts: ensure 100% zoom on load, disable scroll-zoom
+    for _fig in customer_360_charts:
+        _fig.update_layout(autosize=True, dragmode=False)
+
     # Display all charts for the selected data mart
     if customer_360_charts:
         _charts_output = mo.vstack(customer_360_charts)
