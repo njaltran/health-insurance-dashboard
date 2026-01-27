@@ -822,12 +822,12 @@ def _(
 
     # Display all charts for the selected data mart
     if customer_360_charts:
-        chart_displays = [mo.ui.plotly(chart) for chart in customer_360_charts]
-        charts_output = mo.vstack(chart_displays)
+        _chart_displays = [mo.ui.plotly(chart) for chart in customer_360_charts]
+        _charts_output = mo.vstack(_chart_displays)
     else:
-        charts_output = mo.md("*Select a data mart to view visualizations*")
-    charts_output
-    return
+        _charts_output = mo.md("*Select a data mart to view visualizations*")
+
+    _charts_output
 
 
 @app.cell
