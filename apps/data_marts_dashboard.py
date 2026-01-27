@@ -809,7 +809,16 @@ def _(
 
     # Normalize all charts: ensure 100% zoom on load, disable scroll-zoom
     for _fig in customer_360_charts:
-        _fig.update_layout(autosize=True, dragmode=False)
+        _fig.update_layout(
+            autosize=True,
+            dragmode=False,
+            xaxis=dict(fixedrange=True),
+            yaxis=dict(fixedrange=True),
+        )
+        # Also lock all subplot axes (xaxis2, yaxis2, etc.)
+        for key in list(_fig.layout.to_plotly_json().keys()):
+            if key.startswith('xaxis') or key.startswith('yaxis'):
+                _fig.update_layout({key: dict(fixedrange=True)})
 
     # Display all charts for the selected data mart
     if customer_360_charts:
